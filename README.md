@@ -2,7 +2,21 @@
 
 An AI-powered skin disease detection system that analyzes skin lesion images and classifies them into 8 categories. Features an interactive chatbot assistant to explain results, treatments, and causes.
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-name.streamlit.app)
+## 📁 Model Files
+
+**Important:** The trained model files are too large (>100MB) for GitHub, so they are hosted on Google Drive:
+
+**📥 Download Models:** [Google Drive Link](https://drive.google.com/drive/folders/1lAyxcm0465c5LmyNsOG6i96aUx2LbkaZ?usp=sharing)
+
+Please download the model files and place them in the `models/final_model_optimized/` folder before running the application.
+
+## 👥 Project Team
+
+- **Paresh Suva** - Team Leader
+- **Pranay Suthar** - Developer
+- **Krish Zalavadiya** - Developer  
+- **Samarth Patel** - Developer
+
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
@@ -25,44 +39,28 @@ An AI-powered skin disease detection system that analyzes skin lesion images and
 
 ## 🚀 Live Demo
 
-Try the app: [https://your-app-name.streamlit.app](https://your-app-name.streamlit.app)
+Run the application locally using the instructions below.
 
-## 📦 Deploy to Streamlit Cloud
-
-### Quick Deploy
-
-1. **Fork this repository**
-
-2. **Go to [Streamlit Cloud](https://share.streamlit.io/)**
-
-3. **Create new app:**
-   - Repository: `your-username/skin-disease-detection`
-   - Branch: `main`
-   - Main file: `skin_app.py`
-
-4. **Add secrets** (Settings → Secrets):
-   ```toml
-   GROQ_API_KEY = "your_groq_api_key_here"
-   ```
-   Get a free key at: https://console.groq.com/keys
-
-5. **Deploy!** The app will be live in ~2 minutes.
-
-### Important Notes
-
-- Chatbot requires Groq API key (free tier available)
-- App loads instantly with pre-configured model
-
-## 🖥️ Local Development
+## �️ Local Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/skin-disease-detection.git
-cd skin-disease-detection
+git clone https://github.com/Pranay-Suthar/Skin-disease-analysis-using-Deep-Learning.git
+cd Skin-disease-analysis-using-Deep-Learning
 ```
 
-### 2. Create Virtual Environment
+### 2. Download Model Files
+
+Download the trained model from [Google Drive](https://drive.google.com/drive/folders/1lAyxcm0465c5LmyNsOG6i96aUx2LbkaZ?usp=sharing) and extract to:
+```
+models/final_model_optimized/
+├── config.json
+├── model.safetensors
+└── preprocessor_config.json
+```
+
+### 3. Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -74,24 +72,24 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 4. Install Dependencies
 
 ```bash
-# For Streamlit deployment (minimal)
+# For running the app
 pip install -r requirements-streamlit.txt
 
 # For full development (includes training dependencies)
 pip install -r requirements.txt
 ```
 
-### 4. Set Up Environment
+### 5. Set Up Environment (Optional - for chatbot)
 
 ```bash
 cp .env.example .env
 # Edit .env and add your GROQ_API_KEY
 ```
 
-### 5. Run the App
+### 6. Run the App
 
 ```bash
 streamlit run skin_app.py
@@ -142,9 +140,27 @@ skin-disease-detection/
 | Validation Accuracy | 85-92% |
 | Top-3 Accuracy | 96-98% |
 
-## ⚠️ Disclaimer
+## 🔄 Using Your Own Model
 
-**This tool is for educational purposes only and is NOT a substitute for professional medical advice, diagnosis, or treatment.** Always consult a qualified healthcare professional for any skin concerns. Early detection saves lives - if you notice any suspicious skin changes, please see a dermatologist.
+If you have trained your own skin disease classification model, you can easily integrate it:
+
+### Option 1: Replace Existing Model
+1. Place your model files in `models/final_model_optimized/`
+2. Ensure files are named: `config.json`, `model.safetensors`, `preprocessor_config.json`
+3. Update the `LABEL_MAP` in `skin_app.py` if your classes are different
+
+### Option 2: Add New Model Path
+1. Update `LOCAL_MODEL_PATH` in `skin_app.py`:
+   ```python
+   LOCAL_MODEL_PATH = "models/your_model_folder"
+   ```
+2. Place your model files in the new folder
+3. Restart the application
+
+### Supported Model Formats
+- HuggingFace Transformers format (recommended)
+- PyTorch models with AutoImageProcessor
+- Models with 8-class skin disease classification
 
 ## 🤝 Contributing
 
