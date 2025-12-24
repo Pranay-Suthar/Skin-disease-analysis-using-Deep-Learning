@@ -1,0 +1,18 @@
+# Streamlit Cloud deployment requirements
+# Optimized for minimal dependencies and fast deployment
+
+# Web app
+streamlit>=1.25.0
+
+# ML inference (PyTorch + Transformers only - no TensorFlow needed for inference)
+torch>=2.0.0
+transformers>=4.35.0
+
+# Image processing
+Pillow>=9.0.0
+
+# API
+groq>=0.4.0
+
+# Utilities
+python-dotenv>=1.0.0
