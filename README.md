@@ -13,7 +13,7 @@ Please download the model files and place them in the `models/final_model_optimi
 ## 👥 Project Team
 
 - **Paresh Suva** - Team Leader
-- **Pranay Suthar** - Developer
+- **Pranay Suthar** - Lead Developer
 - **Krish Zalavadiya** - Developer  
 - **Samarth Patel** - Developer
 
