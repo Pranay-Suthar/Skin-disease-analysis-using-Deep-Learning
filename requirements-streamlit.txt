@@ -16,3 +16,13 @@ groq>=0.4.0
 
 # Utilities
 python-dotenv>=1.0.0
+requests>=2.28.0
+
+# Maps
+folium>=0.15.0
+streamlit-folium>=0.18.0
+requests>=2.28.0
+
+# Maps
+folium>=0.15.0
+streamlit-folium>=0.18.0
