@@ -1,188 +1,148 @@
-# 🔬 AI Skin Disease Detection System
+# AI Skin Disease Detection App
 
-An AI-powered skin disease detection system that analyzes skin lesion images and classifies them into 8 categories. Features an interactive chatbot assistant to explain results, treatments, and causes.
+## Quick Start
+1. Double-click `run.bat` - that's it!
 
-## 📁 Model Files
+## What You Need
+- Python 3.12.10 (already installed)
+- Node.js 18+ with npm (for frontend)
 
-**Important:** The trained model files are too large (>100MB) for GitHub, so they are hosted on Google Drive:
+## Setup (One Time Only)
 
-**📥 Download Models:** [Google Drive Link](https://drive.google.com/drive/folders/1lAyxcm0465c5LmyNsOG6i96aUx2LbkaZ?usp=sharing)
-
-Please download the model files and place them in the `models/final_model_optimized/` folder before running the application.
-
-## 👥 Project Team
-
-- **Paresh Suva** - Team Leader
-- **Pranay Suthar** - Lead Developer
-- **Krish Zalavadiya** - Developer  
-- **Samarth Patel** - Developer
-
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-
-## 🎯 Features
-
-- **8-Class Skin Disease Classification**
-  - Actinic Keratosis (precancerous)
-  - Basal Cell Carcinoma (skin cancer)
-  - Benign Keratosis (harmless)
-  - Dermatofibroma (benign)
-  - Melanocytic Nevus (common mole)
-  - Melanoma (dangerous cancer)
-  - Squamous Cell Carcinoma (skin cancer)
-  - Vascular Lesion (blood vessel abnormality)
-
-- **AI Chatbot Assistant** - Ask questions about your diagnosis
-- **Detailed Information** - Causes, treatments, home care tips
-- **Educational Resources** - YouTube videos, medical articles
-- **Downloadable Reports** - Save analysis results
-
-## 🚀 Live Demo
-
-Run the application locally using the instructions below.
-
-## �️ Local Setup
-
-### 1. Clone the Repository
-
+### Step 1: Install Dependencies
+Open Command Prompt and run:
 ```bash
-git clone https://github.com/Pranay-Suthar/Skin-disease-analysis-using-Deep-Learning.git
-cd Skin-disease-analysis-using-Deep-Learning
-```
-
-### 2. Download Model Files
-
-Download the trained model from [Google Drive](https://drive.google.com/drive/folders/1lAyxcm0465c5LmyNsOG6i96aUx2LbkaZ?usp=sharing) and extract to:
-```
-models/final_model_optimized/
-├── config.json
-├── model.safetensors
-└── preprocessor_config.json
-```
-
-### 3. Create Virtual Environment
-
-```bash
-python -m venv venv
-
-# Windows
+cd d:\Code-Editors\VS-Code\Python\Skin_App
 venv\Scripts\activate
-
-# macOS/Linux
-source venv/bin/activate
+pip install -r backend/requirements.txt
+cd frontend
+npm install
 ```
 
-### 4. Install Dependencies
+### Step 2: Create .env File
+In project root (`d:\Code-Editors\VS-Code\Python\Skin_App`), create `.env`:
+```
+GROQ_API_KEY=your_key_from_https://console.groq.com/
+FLASK_ENV=development
+```
 
+### Step 3: Run Everything
+Double-click `run.bat` or open two terminals:
+
+**Terminal 1 (Backend):**
 ```bash
-# For running the app
-pip install -r requirements-streamlit.txt
-
-# For full development (includes training dependencies)
-pip install -r requirements.txt
+cd backend
+..\venv\Scripts\activate
+python app.py
 ```
+Backend: http://127.0.0.1:5000
 
-### 5. Set Up Environment (Optional - for chatbot)
-
+**Terminal 2 (Frontend):**
 ```bash
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
+cd frontend
+npm run dev
+```
+Frontend: http://localhost:5173
+
+## How to Use
+1. Upload a skin image (PNG, JPG)
+2. Get instant AI prediction with disease name, confidence %, treatments
+3. Find nearby hospitals/clinics by entering a city
+4. Chat with SkinBot about your condition
+
+## Features
+✅ AI-powered skin disease detection (8 conditions)
+✅ Hospital/clinic finder with directions
+✅ SkinBot AI chatbot (powered by Groq)
+✅ Real-time image analysis
+✅ Beautiful dark theme UI
+✅ CORS enabled for API access
+
+## Diseases Detected
+- Melanoma (Critical)
+- Basal Cell Carcinoma (High)
+- Squamous Cell Carcinoma (High)
+- Actinic Keratosis (Moderate)
+- Dermatofibroma (Low)
+- Benign Keratosis (Low)
+- Melanocytic Nevus (Low)
+- Vascular Lesion (Low)
+
+## Project Structure
+```
+Skin_App/
+├── backend/
+│   ├── app.py (Flask API)
+│   ├── requirements.txt
+│   ├── uploads/ (saved images)
+│   └── config/ (Django config - not used)
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── components/
+│   │   │   ├── ImageUploader.jsx
+│   │   │   ├── ResultsDisplay.jsx
+│   │   │   ├── HospitalLocator.jsx
+│   │   │   └── SkinBotChat.jsx
+│   │   └── index.css
+│   └── package.json
+├── models/
+│   └── final_model_optimized/ (ML model files)
+├── venv/ (Python virtual environment)
+├── run.bat (Start both servers)
+└── README.md (this file)
 ```
 
-### 6. Run the App
+## API Endpoints
+- `POST /api/predict/` - Upload image for analysis
+- `POST /api/hospitals/` - Find hospitals by location
+- `POST /api/chat/` - Chat with SkinBot
+- `GET /api/health/` - Health check
 
-```bash
-streamlit run skin_app.py
-```
+## Troubleshooting
 
-Open http://localhost:8501 in your browser.
+**Backend not responding:**
+- Check Flask is running on http://127.0.0.1:5000
+- Check terminal for error messages
 
-## 📁 Project Structure
+**Image upload fails:**
+- Ensure Flask backend is running
+- Try uploading a different image format (PNG, JPG)
+- Check browser console (F12) for errors
 
-```
-skin-disease-detection/
-├── skin_app.py              # Main Streamlit application
-├── train_cpu.py             # Training script for CPU
-├── train_optimized_colab.py # Training script for GPU (Colab)
-├── requirements.txt         # Full dependencies (dev + training)
-├── requirements-streamlit.txt # Minimal dependencies (deployment)
-├── .streamlit/
-│   └── config.toml          # Streamlit configuration
-├── .env.example             # Environment template
-├── .gitignore               # Git ignore rules
-├── README.md                # This file
-├── LICENSE                  # MIT License
-└── models/
-    └── final_model_optimized/ # Our trained model
-```
+**Hospital search returns no results:**
+- Check internet connection (uses OpenStreetMap)
+- Try a different city name
+- Use format like "New York, NY" or "London, UK"
 
-## 🖥️ Usage
+**Chat not working:**
+- Verify `.env` file has correct GROQ_API_KEY
+- Check internet connection
 
-1. **Upload Image**: Click "Browse files" and select a skin lesion image (JPG, PNG)
-2. **Analyze**: Click "🚀 Analyze Image" to get AI prediction
-3. **View Results**: See the predicted condition, confidence score, and severity
-4. **Chat**: Ask the AI assistant questions about your results
-5. **Learn More**: Check the resources section for treatments and articles
-6. **Download Report**: Save your analysis as a text file
+**Frontend not loading:**
+- Clear browser cache (Ctrl+Shift+Delete)
+- Hard refresh (Ctrl+Shift+R)
+- Check npm is running on port 5173
 
-## 🛠️ Tech Stack
+## Tech Stack
+**Backend:**
+- Flask 3.0.0
+- PyTorch 2.13.0
+- Transformers (HuggingFace)
+- Groq API (LLM)
 
-- **Frontend**: Streamlit
-- **ML Model**: Custom trained Swin Transformer (offline)
-- **Inference**: PyTorch + Transformers
-- **Chatbot**: Groq API with LLaMA 3.1
-- **Dataset**: ISIC (International Skin Imaging Collaboration)
+**Frontend:**
+- React 19.2.8
+- Vite 8.2.0
+- Tailwind CSS 3.4.0
+- Lucide React (icons)
 
-## 📊 Model Performance
+## Medical Disclaimer
+⚠️ This app is for **educational purposes only**. Always consult a qualified healthcare professional for medical advice.
 
-| Metric | Score |
-|--------|-------|
-| Validation Accuracy | 85-92% |
-| Top-3 Accuracy | 96-98% |
-
-## 🔄 Using Your Own Model
-
-If you have trained your own skin disease classification model, you can easily integrate it:
-
-### Option 1: Replace Existing Model
-1. Place your model files in `models/final_model_optimized/`
-2. Ensure files are named: `config.json`, `model.safetensors`, `preprocessor_config.json`
-3. Update the `LABEL_MAP` in `skin_app.py` if your classes are different
-
-### Option 2: Add New Model Path
-1. Update `LOCAL_MODEL_PATH` in `skin_app.py`:
-   ```python
-   LOCAL_MODEL_PATH = "models/your_model_folder"
-   ```
-2. Place your model files in the new folder
-3. Restart the application
-
-### Supported Model Formats
-- HuggingFace Transformers format (recommended)
-- PyTorch models with AutoImageProcessor
-- Models with 8-class skin disease classification
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [ISIC Archive](https://www.isic-archive.com/) for the skin lesion dataset
-- [HuggingFace](https://huggingface.co/) for model hosting
-- [Groq](https://groq.com/) for free LLM API access
-- Medical resources from Mayo Clinic, AAD, and Skin Cancer Foundation
+## License
+MIT - Free to use and modify
 
 ---
 
-⭐ If you found this project helpful, please give it a star!
+**Questions?** Check the code or error messages in the console!

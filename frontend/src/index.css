@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== ROOT DESIGN TOKENS ===== */
+:root {
+  --clr-bg:        #ffffff;
+  --clr-bg-soft:   #f9fafb;
+  --clr-bg-muted:  #f3f4f6;
+  --clr-surface:   #ffffff;
+  --clr-border:    #e5e7eb;
+
+  --clr-primary:   #7c3aed;   /* violet */
+  --clr-primary-h: #6d28d9;
+  --clr-primary-lt:#ede9fe;
+
+  --clr-accent:    #06b6d4;   /* cyan – the "very little blue" accent */
+  --clr-accent-lt: #ecfeff;
+
+  --clr-success:   #10b981;
+  --clr-danger:    #ef4444;
+  --clr-warning:   #f59e0b;
+
+  --clr-text:      #111827;
+  --clr-text-sub:  #6b7280;
+  --clr-text-muted:#9ca3af;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.10);
+  --shadow-glow: 0 0 24px rgba(124,58,237,.25);
+}
+
+/* ===== BASE ===== */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--clr-bg);
+    color: var(--clr-text);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--clr-text);
+  }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--clr-bg-soft); }
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* ===== COMPONENTS ===== */
+@layer components {
+
+  /* --- Buttons --- */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-2.5 font-semibold text-sm text-white rounded-xl
+           transition-all duration-200 active:scale-95 shadow-sm;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #6d28d9, #5b21b6);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-2.5 font-semibold text-sm rounded-xl
+           border transition-all duration-200 active:scale-95;
+    color: var(--clr-primary);
+    border-color: var(--clr-primary);
+    background: transparent;
+  }
+  .btn-secondary:hover {
+    background: var(--clr-primary-lt);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg
+           transition-all duration-200 active:scale-95;
+    color: var(--clr-text-sub);
+  }
+  .btn-ghost:hover {
+    background: var(--clr-bg-muted);
+    color: var(--clr-text);
+  }
+
+  /* --- Cards --- */
+  .card {
+    @apply rounded-2xl p-6;
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .2s, transform .2s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-elevated {
+    @apply rounded-2xl p-8;
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-glass {
+    @apply rounded-2xl p-6;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.6);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-gradient {
+    @apply rounded-2xl p-8;
+    background: linear-gradient(135deg, #fdf4ff 0%, #f5f3ff 50%, #ecfeff 100%);
+    border: 1px solid #e9d5ff;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .2s, transform .2s;
+  }
+  .card-gradient:hover { box-shadow: var(--shadow-md); }
+
+  /* --- Typography --- */
+  .section-title {
+    @apply text-5xl md:text-6xl font-bold leading-tight;
+    color: var(--clr-text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .section-subtitle {
+    @apply text-lg leading-relaxed;
+    color: var(--clr-text-sub);
+  }
+
+  .page-title {
+    @apply text-4xl md:text-5xl font-bold;
+    color: var(--clr-text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .page-subtitle {
+    @apply text-xl;
+    color: var(--clr-text-sub);
+  }
+
+  /* --- Inputs --- */
+  .input-field {
+    @apply w-full px-4 py-3 text-sm rounded-xl border outline-none transition-all duration-200;
+    border-color: var(--clr-border);
+    background: var(--clr-bg-soft);
+    color: var(--clr-text);
+  }
+  .input-field:focus {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+    background: white;
+  }
+
+  /* --- Badges --- */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-primary { background: var(--clr-primary-lt); color: var(--clr-primary); }
+  .badge-success { @apply bg-emerald-50 text-emerald-700; }
+  .badge-warning { @apply bg-amber-50 text-amber-700; }
+  .badge-danger  { @apply bg-red-50 text-red-600; }
+
+  /* --- Glass nav --- */
+  .glass {
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(229,231,235,.8);
+    box-shadow: 0 2px 16px rgba(0,0,0,.06);
+  }
+
+  /* --- Gradient text --- */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* --- Divider --- */
+  .divider { @apply h-px bg-gray-100; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn  { from { opacity:0; }                     to { opacity:1; } }
+@keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+@keyframes slideDown { from { transform:translateY(-10px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+@keyframes shimmer { from { background-position:-800px 0; } to { background-position:800px 0; } }
+
+.animate-fade-in   { animation: fadeIn   .5s ease-out; }
+.animate-slide-up  { animation: slideUp  .5s ease-out; }
+.animate-slide-down { animation: slideDown .35s ease-out; }
