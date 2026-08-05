@@ -6,6 +6,7 @@ streamlit>=1.25.0
 
 # ML inference (PyTorch + Transformers only - no TensorFlow needed for inference)
 torch>=2.0.0
+torchvision>=0.15.0
 transformers>=4.35.0
 
 # Image processing
@@ -17,11 +18,7 @@ groq>=0.4.0
 # Utilities
 python-dotenv>=1.0.0
 requests>=2.28.0
-
-# Maps
-folium>=0.15.0
-streamlit-folium>=0.18.0
-requests>=2.28.0
+reportlab>=4.0.0
 
 # Maps
 folium>=0.15.0
