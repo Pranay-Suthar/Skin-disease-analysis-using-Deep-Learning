@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { Icon } from '@iconify/react';
 
 const NAV_LINKS = [
+  { to: '/',          label: 'Home' },
   { to: '/analyze',   label: 'Analyze' },
   { to: '/resources', label: 'Resources' },
   { to: '/hospitals', label: 'Find Care' },
@@ -26,13 +28,13 @@ export default function Header({ showAnalyzeButton = true, analyzeButtonText = '
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm"
-                 style={{ background: 'linear-gradient(135deg,#7c3aed,#06b6d4)' }}>
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                 style={{ background: 'linear-gradient(135deg,#e11d48,#f59e0b)' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white">
+                <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/>
               </svg>
             </div>
             <span className="font-bold text-lg text-gray-900 group-hover:opacity-80 transition-opacity">
-              Derma<span style={{ color: '#7c3aed' }}>AI</span>
+              Derma<span style={{ color: '#e11d48' }}>AI</span>
             </span>
           </Link>
 
@@ -44,7 +46,7 @@ export default function Header({ showAnalyzeButton = true, analyzeButtonText = '
                 to={item.to}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   pathname === item.to
-                    ? 'text-violet-700 bg-violet-50'
+                    ? 'text-rose-700 bg-rose-50'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                 }`}
               >
@@ -55,6 +57,15 @@ export default function Header({ showAnalyzeButton = true, analyzeButtonText = '
 
           {/* Right */}
           <div className="flex items-center gap-2">
+            <a 
+              href="https://github.com/Pranay-Suthar/Skin-disease-analysis-using-Deep-Learning"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View Source on GitHub"
+              className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors mr-1 sm:mr-2"
+            >
+              <Icon icon="mdi:github" className="w-5 h-5" />
+            </a>
             {showAnalyzeButton && (
               <Link
                 to="/analyze"

@@ -12,12 +12,12 @@
   --clr-surface:   #ffffff;
   --clr-border:    #e5e7eb;
 
-  --clr-primary:   #7c3aed;   /* violet */
-  --clr-primary-h: #6d28d9;
-  --clr-primary-lt:#ede9fe;
+  --clr-primary:   #e11d48;   /* rose-600 */
+  --clr-primary-h: #be123c;   /* rose-700 */
+  --clr-primary-lt:#ffe4e6;   /* rose-100 */
 
-  --clr-accent:    #06b6d4;   /* cyan – the "very little blue" accent */
-  --clr-accent-lt: #ecfeff;
+  --clr-accent:    #f59e0b;   /* amber-500 */
+  --clr-accent-lt: #fef3c7;   /* amber-100 */
 
   --clr-success:   #10b981;
   --clr-danger:    #ef4444;
@@ -35,7 +35,7 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,.08);
   --shadow-lg: 0 10px 30px rgba(0,0,0,.10);
-  --shadow-glow: 0 0 24px rgba(124,58,237,.25);
+  --shadow-glow: 0 0 24px rgba(225,29,72,.25);
 }
 
 /* ===== BASE ===== */
@@ -75,10 +75,10 @@
   .btn-primary {
     @apply inline-flex items-center gap-2 px-6 py-2.5 font-semibold text-sm text-white rounded-xl
            transition-all duration-200 active:scale-95 shadow-sm;
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: linear-gradient(135deg, #e11d48, #be123c);
   }
   .btn-primary:hover {
-    background: linear-gradient(135deg, #6d28d9, #5b21b6);
+    background: linear-gradient(135deg, #be123c, #9f1239);
     box-shadow: var(--shadow-glow);
     transform: translateY(-1px);
   }
@@ -134,8 +134,8 @@
 
   .card-gradient {
     @apply rounded-2xl p-8;
-    background: linear-gradient(135deg, #fdf4ff 0%, #f5f3ff 50%, #ecfeff 100%);
-    border: 1px solid #e9d5ff;
+    background: linear-gradient(135deg, #fff1f2 0%, #ffedd5 50%, #fef3c7 100%);
+    border: 1px solid #fecdd3;
     box-shadow: var(--shadow-sm);
     transition: box-shadow .2s, transform .2s;
   }
@@ -173,7 +173,7 @@
   }
   .input-field:focus {
     border-color: var(--clr-primary);
-    box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+    box-shadow: 0 0 0 3px rgba(225,29,72,.12);
     background: white;
   }
 
@@ -182,7 +182,7 @@
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
   }
   .badge-primary { background: var(--clr-primary-lt); color: var(--clr-primary); }
-  .badge-success { @apply bg-emerald-50 text-emerald-700; }
+  .badge-success { @apply bg-indigo-50 text-indigo-700; }
   .badge-warning { @apply bg-amber-50 text-amber-700; }
   .badge-danger  { @apply bg-red-50 text-red-600; }
 

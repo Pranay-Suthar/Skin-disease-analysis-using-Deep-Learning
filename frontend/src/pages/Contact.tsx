@@ -47,7 +47,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   placeholder="Your name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600"
                 />
               </div>
 
@@ -60,7 +60,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600"
                 />
               </div>
 
@@ -73,13 +73,13 @@ export default function Contact() {
                   required
                   placeholder="Your message..."
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600 resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600 resize-none"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition"
+                className="w-full px-6 py-3 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition"
               >
                 Send Message
               </button>
@@ -92,26 +92,26 @@ export default function Contact() {
               <h3 className="text-xl font-bold text-gray-900 mb-4">Direct Contact</h3>
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm font-bold text-teal-600 mb-1">Email</p>
+                  <p className="text-sm font-bold text-rose-600 mb-1">Email</p>
                   <p className="font-bold text-gray-900">support@dermaai.health</p>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-teal-600 mb-1">Phone</p>
+                  <p className="text-sm font-bold text-rose-600 mb-1">Phone</p>
                   <p className="font-bold text-gray-900">(800) 555-0126</p>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-teal-600 mb-1">Hours</p>
+                  <p className="text-sm font-bold text-rose-600 mb-1">Hours</p>
                   <p className="font-bold text-gray-900">Mon-Fri, 8 AM-6 PM PT</p>
                 </div>
               </div>
             </div>
 
-            <div className="card bg-teal-50 border-teal-600 border-2">
+            <div className="card bg-rose-50 border-rose-600 border-2">
               <h3 className="font-bold text-gray-900 mb-2">💡 Need Help?</h3>
               <p className="text-sm text-gray-600 mb-4">
                 Our support team is here to help you get the most out of DermaAI.
               </p>
-              <a href="/hospitals" className="text-teal-600 font-bold hover:text-teal-700">
+              <a href="/hospitals" className="text-rose-600 font-bold hover:text-rose-700">
                 Find Care →
               </a>
             </div>

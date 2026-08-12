@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { Activity, Upload, Zap, Shield, Users, MapPin, BookOpen, MessageCircle, Heart, CheckCircle2, ArrowRight, X, LogIn, UserPlus } from 'lucide-react';
 
-const AuthModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+const AuthModal = ({ isOpen, onClose, redirectTo }: { isOpen: boolean; onClose: () => void; redirectTo?: string }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -26,119 +27,197 @@ const AuthModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      
+
       if (response.ok) {
-        setSuccess(isLogin ? 'Login successful!' : 'Account created successfully!');
+        setSuccess(isLogin ? 'Login successful! Redirecting...' : 'Account created! Redirecting...');
         if (data.user) {
           localStorage.setItem('user', JSON.stringify(data.user));
         }
         setTimeout(() => {
           onClose();
-          window.location.reload();
-        }, 1500);
+          if (redirectTo && redirectTo !== '/') {
+            navigate(redirectTo);
+          } else {
+            window.location.reload();
+          }
+        }, 1200);
       } else {
-        setError(data.error || 'Authentication failed');
+        setError(data.error || 'Authentication failed. Please try again.');
       }
-    } catch (err) {
-      setError('Network error. Please try again.');
+    } catch {
+      setError('Network error. Is the backend running?');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative animate-fade-in">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors">
-          <X className="w-5 h-5" />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden relative animate-fade-in">
+
+        {/* Top gradient bar */}
+        <div className="h-2 w-full" style={{ background: 'linear-gradient(90deg,#e11d48,#f59e0b)' }} />
+
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5 p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition"
+        >
+          <X className="w-4 h-4" />
         </button>
-        
+
         <div className="p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-            <p className="text-gray-500">{isLogin ? 'Sign in to access your analysis history.' : 'Join us for personalized skin insights.'}</p>
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg,#e11d48,#f59e0b)' }}>
+              <Activity className="w-7 h-7 text-white" />
+            </div>
           </div>
 
-          <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
-            <button 
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-1 font-display">
+              {isLogin ? 'Welcome back' : 'Create account'}
+            </h2>
+            <p className="text-gray-500 text-sm">
+              {isLogin
+                ? 'Sign in to access your skin analysis'
+                : 'Join DermaAI for personalized skin insights'}
+            </p>
+          </div>
+
+          {/* Toggle */}
+          <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+            <button
               onClick={() => setIsLogin(true)}
-              className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${isLogin ? 'bg-white shadow text-teal-600' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+                isLogin ? 'bg-white shadow text-rose-700' : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
               Log In
             </button>
-            <button 
+            <button
               onClick={() => setIsLogin(false)}
-              className={`flex-1 py-2 text-sm font-semibold rounded-md transition-all ${!isLogin ? 'bg-white shadow text-teal-600' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+                !isLogin ? 'bg-white shadow text-rose-700' : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
               Sign Up
             </button>
           </div>
 
-          {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg">{error}</div>}
-          {success && <div className="mb-4 p-3 bg-green-50 text-green-600 text-sm rounded-lg">{success}</div>}
+          {error   && <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100">{error}</div>}
+          {success && <div className="mb-4 p-3 bg-green-50 text-green-600 text-sm rounded-xl border border-green-100">{success}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <input 
-                  type="text" required 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
-                  value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Full Name</label>
+                <input
+                  type="text" required
+                  className="input-field"
+                  placeholder="Your name"
+                  value={formData.name}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
                 />
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input 
-                type="email" required 
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
-                value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})}
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Email</label>
+              <input
+                type="email" required
+                className="input-field"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input 
-                type="password" required 
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
-                value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})}
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Password</label>
+              <input
+                type="password" required
+                className="input-field"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={e => setFormData({ ...formData, password: e.target.value })}
               />
             </div>
-            
-            <button 
-              type="submit" disabled={loading}
-              className="w-full py-3 mt-6 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold rounded-lg hover:from-teal-700 hover:to-emerald-700 transition-all shadow-md flex justify-center items-center gap-2"
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 mt-2 text-white font-bold rounded-xl transition-all flex justify-center items-center gap-2 disabled:opacity-70"
+              style={{ background: 'linear-gradient(135deg,#e11d48,#be123c)' }}
             >
-              {loading ? 'Please wait...' : isLogin ? <><LogIn className="w-5 h-5"/> Sign In</> : <><UserPlus className="w-5 h-5"/> Sign Up</>}
+              {loading
+                ? 'Please wait...'
+                : isLogin
+                  ? <><LogIn className="w-4 h-4" /> Sign In</>
+                  : <><UserPlus className="w-4 h-4" /> Create Account</>}
             </button>
           </form>
+
+          <p className="text-center text-xs text-gray-400 mt-6">
+            By continuing you agree to our Terms of Service
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
+const RANDOM_IMAGES = [
+  'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80',
+  'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80',
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80',
+  'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+  'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80',
+  'https://images.unsplash.com/photo-1617897903246-719242758050?w=800&q=80',
+  'https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80',
+  'https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?w=800&q=80',
+  'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+];
+const getRandomImage = () => RANDOM_IMAGES[Math.floor(Math.random() * RANDOM_IMAGES.length)];
+
 export default function Home() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const user = localStorage.getItem('user');
+  const [heroImage, setHeroImage] = useState('');
+  const [featureImage, setFeatureImage] = useState('');
   
+  useEffect(() => {
+    setHeroImage(getRandomImage());
+    setFeatureImage(getRandomImage());
+  }, []);
+  const location = useLocation();
+  const user = localStorage.getItem('user');
+
+  // If redirected from a protected route, auto-open the auth modal
+  const redirectTo = (location.state as any)?.from?.pathname;
+  useEffect(() => {
+    if ((location.state as any)?.openAuth) {
+      setIsAuthOpen(true);
+    }
+  }, [location.state]);
+
   return (
     <div className="min-h-screen bg-white pt-20">
       <Header />
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        redirectTo={redirectTo}
+      />
 
       {/* Hero Section */}
       <section className="px-5 py-8 md:py-14 relative overflow-hidden">
         {/* Soft background blobs */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle,#ede9fe,transparent)' }} />
-          <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#ecfeff,transparent)' }} />
+          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-30" style={{ background: 'radial-gradient(circle,#ffe4e6,transparent)' }} />
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-20" style={{ background: 'radial-gradient(circle,#fef3c7,transparent)' }} />
         </div>
 
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-12 items-center">
             <div className="animate-slide-up">
-              <div className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full text-sm font-semibold" style={{ background:'#ede9fe', color:'#7c3aed' }}>
+              <div className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full text-sm font-semibold" style={{ background:'#ffe4e6', color:'#e11d48' }}>
                 <Zap className="w-4 h-4" /> AI-Powered Skin Analysis
               </div>
               <h1 className="section-title mb-6">
@@ -184,10 +263,10 @@ export default function Home() {
 
             {/* Hero Image */}
             <div className="relative animate-slide-down">
-              <div className="absolute -inset-6 rounded-3xl blur-2xl opacity-50" style={{ background: 'linear-gradient(135deg,#ede9fe,#ecfeff)' }}></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+              <div className="absolute -inset-6 rounded-3xl blur-2xl opacity-50" style={{ background: 'linear-gradient(135deg,#ffe4e6,#fef3c7)' }}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 aspect-square md:aspect-[4/3]">
                 <img
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=600&fit=crop&q=80"
+                  src={heroImage || "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=600&fit=crop&q=80"}
                   alt="Skincare"
                   className="w-full h-full object-cover"
                 />
@@ -198,7 +277,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-14 px-5" style={{ background: 'linear-gradient(135deg,#7c3aed,#6d28d9)' }}>
+      <section className="py-14 px-5" style={{ background: 'linear-gradient(135deg,#e11d48,#be123c)' }}>
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 md:grid-cols-3">
             {[
@@ -229,7 +308,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-3 relative">
-            <div className="hidden md:block absolute top-1/4 left-1/3 right-1/3 h-px" style={{ background: 'linear-gradient(90deg,#ede9fe,#ecfeff)' }}></div>
+            <div className="hidden md:block absolute top-1/4 left-1/3 right-1/3 h-px" style={{ background: 'linear-gradient(90deg,#ffe4e6,#fef3c7)' }}></div>
 
             {[
               {
@@ -253,10 +332,10 @@ export default function Home() {
             ].map((feature, idx) => (
               <div key={idx} className="card group hover:-translate-y-2 transition-all duration-300">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-xl" style={{ background:'#ede9fe' }}>
-                    <feature.Icon className="w-7 h-7" style={{ color:'#7c3aed' }} />
+                  <div className="p-3 rounded-xl" style={{ background:'#ffe4e6' }}>
+                    <feature.Icon className="w-7 h-7" style={{ color:'#e11d48' }} />
                   </div>
-                  <div className="w-9 h-9 rounded-full text-white flex items-center justify-center font-bold text-sm" style={{ background:'linear-gradient(135deg,#7c3aed,#06b6d4)' }}>
+                  <div className="w-9 h-9 rounded-full text-white flex items-center justify-center font-bold text-sm" style={{ background:'linear-gradient(135deg,#e11d48,#f59e0b)' }}>
                     {feature.step}
                   </div>
                 </div>
@@ -273,10 +352,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-16 lg:grid-cols-2 items-center">
             <div className="relative group">
-              <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-40 group-hover:opacity-70 transition-opacity" style={{ background:'linear-gradient(135deg,#ede9fe,#ecfeff)' }}></div>
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+              <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-40 group-hover:opacity-70 transition-opacity" style={{ background:'linear-gradient(135deg,#ffe4e6,#fef3c7)' }}></div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-100 aspect-square">
                 <img
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=500&fit=crop&q=80"
+                  src={featureImage || "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=500&h=500&fit=crop&q=80"}
                   alt="Real-time analysis"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -294,8 +373,8 @@ export default function Home() {
                   { Icon: Heart, title: 'Expert Guidance', desc: 'Backed by dermatologists' },
                 ].map((item, idx) => (
                   <div key={idx} className="flex gap-4 items-start">
-                    <div className="p-2 rounded-lg flex-shrink-0" style={{ background:'#ede9fe' }}>
-                      <item.Icon className="w-5 h-5" style={{ color:'#7c3aed' }} />
+                    <div className="p-2 rounded-lg flex-shrink-0" style={{ background:'#ffe4e6' }}>
+                      <item.Icon className="w-5 h-5" style={{ color:'#e11d48' }} />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900">{item.title}</p>
@@ -331,11 +410,11 @@ export default function Home() {
                 to={link.to}
                 className="card group hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                 style={{ borderColor: 'transparent' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#7c3aed')}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#e11d48')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'transparent')}
               >
-                <div className="p-2.5 rounded-xl mb-4 inline-flex" style={{ background:'#ede9fe' }}>
-                  <link.Icon className="w-6 h-6" style={{ color:'#7c3aed' }} />
+                <div className="p-2.5 rounded-xl mb-4 inline-flex" style={{ background:'#ffe4e6' }}>
+                  <link.Icon className="w-6 h-6" style={{ color:'#e11d48' }} />
                 </div>
                 <h3 className="text-base font-bold mb-1 text-gray-900">{link.title}</h3>
                 <p className="text-gray-500 text-sm">{link.desc}</p>
@@ -346,7 +425,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-5 py-24 relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#7c3aed 0%,#6d28d9 50%,#06b6d4 100%)' }}>
+      <section className="px-5 py-24 relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#e11d48 0%,#be123c 50%,#f59e0b 100%)' }}>
         <div className="mx-auto max-w-2xl text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">Ready to Transform Your Skin Care?</h2>
           <p className="text-white/80 mb-10 text-lg leading-relaxed">
@@ -355,7 +434,7 @@ export default function Home() {
           <Link
             to="/analyze"
             className="inline-flex items-center gap-2 px-10 py-4 bg-white font-bold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 active:scale-95"
-            style={{ color:'#7c3aed' }}
+            style={{ color:'#e11d48' }}
           >
             <span>Get Started Free</span>
             <ArrowRight className="w-5 h-5" />
@@ -364,13 +443,13 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer style={{ background:'#0f0a1a' }}>
+      <footer style={{ background:'#292524' }}>
         <div className="px-5 py-20">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-12 md:grid-cols-4 mb-16">
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'linear-gradient(135deg,#7c3aed,#06b6d4)' }}>
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background:'linear-gradient(135deg,#e11d48,#f59e0b)' }}>
                     <Activity className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-bold text-lg text-white">DermaAI</span>
@@ -410,7 +489,7 @@ export default function Home() {
                   <ul className="space-y-3">
                     {section.links.map((link, linkIdx) => (
                       <li key={linkIdx}>
-                        <Link to={link.to} className="text-white/60 hover:text-teal-300 transition-colors text-sm font-medium">
+                        <Link to={link.to} className="text-white/60 hover:text-rose-300 transition-colors text-sm font-medium">
                           {link.label}
                         </Link>
                       </li>
